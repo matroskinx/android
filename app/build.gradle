@@ -8,20 +8,32 @@ def keystorePropertiesFile = file('keystore.properties')
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-def verName = grgit.describe(tags: true, longDescr: true)
+def stream = new ByteArrayOutputStream()
 
-def dot_patch = verName.indexOf('.', verName.indexOf('.') + 1)
+exec {
+    commandLine 'git', 'describe', '--tags'
+    standardOutput = stream
+}
+def output = stream.toString()
 
-def majorMinor = verName.substring(0, dot_patch)
+def major = 0
+def minor = 0
+def patch = 0
 
-def dot_minor = verName.indexOf('.')
+def dash_pos = output.indexOf('-')
 
-def minor = verName.substring(dot_minor + 1, dot_patch).toInteger()
+major = output.substring(1, output.indexOf('.')).toInteger()
 
-def left_border = verName.indexOf("-")
-def right_border = verName.indexOf("-", left_border + 1)
-def patch = verName.substring(left_border + 1, right_border)
-def verCode = grgit.tag.list().size + minor * 10 + patch.toInteger()
+if (dash_pos != -1) //есть еще коммит
+{
+    patch = output.substring(dash_pos + 1, output.indexOf('-', dash_pos + 1)).toInteger()
+    minor = output.substring(output.indexOf('.') + 1, dash_pos).toInteger()
+}
+else
+{
+    minor = output.substring(output.indexOf('.') + 1).toInteger()
+}
+
 
 android {
     signingConfigs {
@@ -39,9 +51,10 @@ android {
         applicationId "com.example.vladislav.android5"
         minSdkVersion 23
         targetSdkVersion 23
-        versionCode verCode
-        versionName majorMinor + '.' + patch
+        versionCode major * 1000 + minor * 100 + patch
+        versionName major.toString() + '.' + minor.toString() + '.' + patch.toString()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.sign_release
     }
 
 
@@ -49,12 +62,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.sign_release
         }
 
         applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "Android5-${variant.versionName}.apk"
+                outputFileName = "${variant.applicationId}-${variant.versionName}.apk"
             }
 
         }
@@ -63,9 +75,12 @@ android {
     productFlavors {
         developer {
             versionNameSuffix "-dev"
+            manifestPlaceholders.screenOrientation = "sensor"
+
         }
         master {
-
+            manifestPlaceholders.screenOrientation = "portrait"
+            applicationIdSuffix ".master"
         }
     }
 

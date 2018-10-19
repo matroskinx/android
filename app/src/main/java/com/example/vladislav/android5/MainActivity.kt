@@ -1,23 +1,15 @@
 package com.example.vladislav.android5
 
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.PermissionChecker
-import android.telephony.NetworkScanRequest
 import android.telephony.TelephonyManager
 import android.view.View
-import android.widget.Button
-
-import android.widget.TextView
-import android.widget.Toast
-import android.support.design.widget.Snackbar
-import android.widget.FrameLayout
-import java.util.jar.Manifest
+import kotlinx.android.synthetic.main.activity_main.*
 
 val PHONE_STATE_PERM_CODE = 289
 
@@ -26,26 +18,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById<TextView>(R.id.textView4).apply{
-            text = BuildConfig.VERSION_NAME
-        }
+        versionTextView4.text = BuildConfig.VERSION_NAME
         GetID()
-        if (BuildConfig.FLAVOR.equals("master"))
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        else if (BuildConfig.FLAVOR.equals("developer"))
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        }
-
     }
 
     fun button_response(view: View)
     {
         if(checkSelfPermission(android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)
         {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Permission already granted", Toast.LENGTH_LONG).show()
+            Snackbar.make(mainLayout, getString(R.string.perm_granted), Snackbar.LENGTH_LONG).show()
+
         }
         else
         {
@@ -68,13 +51,18 @@ class MainActivity : AppCompatActivity() {
     {
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_PHONE_STATE))
         {
-            Toast.makeText(this, "In order to see IMEI number, you have to grant phone permission", Toast.LENGTH_LONG).show()
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_PHONE_STATE), PHONE_STATE_PERM_CODE)
+            Snackbar.make(mainLayout, getString(R.string.perm_request), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.text_grant_button)) {
+                        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_PHONE_STATE), PHONE_STATE_PERM_CODE)
+                    }
+                    .show()
+
         }
         else
         {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_PHONE_STATE), PHONE_STATE_PERM_CODE)
         }
+
     }
 
 
@@ -89,9 +77,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 else
                 {
-                    findViewById<TextView>(R.id.textView).apply {
-                        text = "Permission not granted"
-                    }
+                    imeiTextView.text = getString(R.string.perm_not_granted)
+                    Snackbar.make(mainLayout, getString(R.string.perm_warning), Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -100,9 +87,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showImei() {
         val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        findViewById<TextView>(R.id.textView).apply {
-            text = telephonyManager.imei
-        }
+        imeiTextView.text = telephonyManager.imei
     }
 
 

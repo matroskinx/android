@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Android5</string>
+    <string name="perm_not_granted">Permission not granted</string>
+    <string name="perm_warning">App cannot run without permissions</string>
+    <string name="perm_request">App needs access to your phone</string>
+    <string name="perm_granted">Permission already granted</string>
+    <string name="text_grant_button">Grant</string>
+    <string name="text_button_request">Request permissions</string>
 </resources>

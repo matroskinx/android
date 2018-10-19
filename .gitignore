@@ -4,8 +4,10 @@
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
+.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 test
+app/keystore.properties
