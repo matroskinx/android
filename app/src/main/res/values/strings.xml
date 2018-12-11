@@ -6,4 +6,5 @@
     <string name="perm_granted">Permission already granted</string>
     <string name="text_grant_button">Grant</string>
     <string name="text_button_request">Request permissions</string>
+
 </resources>

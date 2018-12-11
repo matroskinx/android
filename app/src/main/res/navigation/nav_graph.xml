@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/home_dest">
+
+    <fragment
+        android:id="@+id/home_dest"
+        android:name="com.example.vladislav.android5.HomeFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_home_dest_to_status_dest2"
+            app:destination="@id/status_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/status_dest"
+        android:name="com.example.vladislav.android5.StatusFragment"
+        android:label="Status" />
+    <fragment
+        android:id="@+id/about_dest"
+        android:name="com.example.vladislav.android5.AboutFragment"
+        android:label="About" />
+    <fragment
+        android:id="@+id/user_dest"
+        android:name="com.example.vladislav.android5.UserFragment"
+        android:label="UserFragment" />
+</navigation>
