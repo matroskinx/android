@@ -7,41 +7,290 @@
     android:layout_height="match_parent">
 
     <ViewSwitcher
-        android:id="@+id/view_switcher"
+        android:id="@+id/view_switcher_x"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/img_avatar"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <!--<Button-->
+                <!--android:id="@+id/camera_button"-->
+                <!--android:layout_width="172dp"-->
+                <!--android:layout_height="48dp"-->
+                <!--android:layout_below="@id/imageView"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:text="CAMERA" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/pick_button"-->
+                <!--android:layout_width="172dp"-->
+                <!--android:layout_height="48dp"-->
+                <!--android:layout_below="@id/imageView"-->
+                <!--android:layout_toRightOf="@id/camera_button"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:text="PICK" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textView3"-->
+                <!--android:layout_width="86dp"-->
+                <!--android:layout_height="29dp"-->
+                <!--android:text="TextView"-->
+                <!--android:layout_below="@id/xb"/>-->
+
+            <!--<Button-->
+                <!--android:id="@+id/xb"-->
+                <!--android:layout_width="92dp"-->
+                <!--android:layout_height="38dp"-->
+                <!--android:text="Change" />-->
+
             <TextView
+                android:id="@+id/name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="HELLO FROM FIRST(NO EDIT)" />
+                android:layout_below="@id/imageView"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="96dp"
+                android:text="Name:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_label"
+                android:layout_marginStart="96dp"
+
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/last_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_text"
+                android:layout_marginStart="96dp"
+                android:text="Last name:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/last_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/last_name_label"
+                android:layout_marginStart="96dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/phone_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/last_name_text"
+                android:layout_marginStart="96dp"
+                android:text="Phone:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/phone_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_label"
+                android:layout_marginStart="96dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/email_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_text"
+                android:layout_marginStart="96dp"
+                android:text="Email:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/email_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email_label"
+                android:layout_marginStart="96dp"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/noedit_switch_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end|bottom"
+                android:layout_below="@id/email_text"
                 android:text="SWITCH" />
-        </LinearLayout>
 
-        <LinearLayout
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="HELLO FROM SECOND(EDIT)" />
+
+            <ImageView
+                android:id="@+id/imageView_e"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/img_avatar"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <Button
-                android:id="@+id/edit_switch"
+                android:id="@+id/camera_button_e"
+                android:layout_width="172dp"
+                android:layout_height="48dp"
+                android:layout_below="@id/imageView_e"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="CAMERA" />
+
+            <Button
+                android:id="@+id/pick_button_e"
+                android:layout_width="172dp"
+                android:layout_height="48dp"
+                android:layout_below="@id/imageView_e"
+                android:layout_toRightOf="@id/camera_button_e"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="PICK" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/textView3_e"-->
+                <!--android:layout_width="86dp"-->
+                <!--android:layout_height="29dp"-->
+                <!--android:text="TextView"-->
+                <!--android:layout_below="@id/xb_e"/>-->
+
+            <!--<Button-->
+                <!--android:id="@+id/xb_e"-->
+                <!--android:layout_width="92dp"-->
+                <!--android:layout_height="38dp"-->
+                <!--android:text="Change" />-->
+
+            <TextView
+                android:id="@+id/name_label_e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/pick_button_e"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="96dp"
+                android:text="Name:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/name_text_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_label_e"
+                android:layout_marginStart="96dp"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/last_name_label_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_text_e"
+                android:layout_marginStart="96dp"
+                android:text="Last name:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/last_name_text_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/last_name_label_e"
+                android:layout_marginStart="96dp"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/phone_label_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/last_name_text_e"
+                android:layout_marginStart="96dp"
+                android:text="Phone:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/phone_text_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_label_e"
+                android:layout_marginStart="96dp"
+                android:inputType="phone"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/email_label_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_text_e"
+                android:layout_marginStart="96dp"
+                android:text="Email:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/email_text_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email_label_e"
+                android:layout_marginStart="96dp"
+                android:inputType="textEmailAddress"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/noedit_switch_btn_e"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end|bottom"
+                android:layout_below="@id/email_text_e"
                 android:text="SWITCH BACK" />
-        </LinearLayout>
+
+
+        </RelativeLayout>
+
 
     </ViewSwitcher>
 

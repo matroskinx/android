@@ -23,6 +23,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import androidx.navigation.ui.*
 import androidx.navigation.ui.NavigationUI.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.storage.StorageReference
 
 
 val PHONE_STATE_PERM_CODE = 289
@@ -32,6 +34,7 @@ var testString : String? = null
 class MainActivity : AppCompatActivity() {
 
     var mHost : NavHostFragment? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -98,17 +101,21 @@ class MainActivity : AppCompatActivity() {
 //        var a = supportFragmentManager.fragments[0].id
     }
 
+    override fun onBackPressed() {
+        val f = mHost?.fragmentManager?.findFragmentById(R.id.my_nav_host_fragment)
 
-
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        super.onSaveInstanceState(outState, outPersistentState)
-
-        if(outState != null)
-        {
-            mHost?.fragmentManager?.putFragment(outState,"myft", mHost?.fragmentManager?.findFragmentById(R.id.home_dest)!!)
-        }
-
+        super.onBackPressed()
     }
+
+//    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+//        super.onSaveInstanceState(outState, outPersistentState)
+//
+//        if(outState != null)
+//        {
+//            mHost?.fragmentManager?.putFragment(outState,"myft", mHost?.fragmentManager?.findFragmentById(R.id.home_dest)!!)
+//        }
+//
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
@@ -122,7 +129,8 @@ class MainActivity : AppCompatActivity() {
                 || super.onOptionsItemSelected(item)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
+    override fun onSupportNavigateUp(): Boolean
+    {
         return navigateUp(findNavController(R.id.my_nav_host_fragment), null)
     }
 

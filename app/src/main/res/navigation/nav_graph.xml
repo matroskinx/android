@@ -9,9 +9,9 @@
         android:id="@+id/home_dest"
         android:name="com.example.vladislav.android5.HomeFragment"
         android:label="Home">
-        <action
-            android:id="@+id/action_home_dest_to_status_dest2"
-            app:destination="@id/status_dest" />
+        <!--<action-->
+            <!--android:id="@+id/action_home_dest_to_status_dest2"-->
+            <!--app:destination="@id/status_dest" />-->
     </fragment>
     <fragment
         android:id="@+id/status_dest"

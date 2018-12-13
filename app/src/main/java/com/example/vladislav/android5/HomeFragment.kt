@@ -13,6 +13,10 @@ import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Environment
 import androidx.core.content.FileProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -25,6 +29,9 @@ val REQUEST_GALLERY_PICK = 9
 class HomeFragment : Fragment() {
 
     var mCurrentPhotoPath : String = ""
+    val mDatabase = FirebaseDatabase.getInstance().getReference()
+
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container : ViewGroup?,
@@ -37,8 +44,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
-        Snackbar.make(view, "HELLO HANDLER INSTALLED", Snackbar.LENGTH_LONG).show()
-        camera_button.setOnClickListener{
+/*        camera_button.setOnClickListener{
             //StartCameraIntent()
             dispatchTakePictureIntent()
         }
@@ -49,29 +55,42 @@ class HomeFragment : Fragment() {
 
         xb.setOnClickListener{
             textView3.text = "SAAAAAAAAAAAAVEME"
-        }
 
-        textView3.text = savedInstanceState?.getString("twkey")
+            val user = User("Vladislav", "Kirianov", "matroskinx@gmail.com", "+375291966216")
+            mDatabase.child("users").child(user.username!!).setValue(user)
+//            myRef.setValue("HELLLLLLLLLLLLLLLLLO save me pls")
+        }*/
+
+        //textView3.text = savedInstanceState?.getString("twkey")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (savedInstanceState != null)
-        {
-            //todo restore fragment here
-            textView3.text = savedInstanceState?.getString("twkey")
+/*        val userListener = object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+
+                val user = p0.getValue(User::class.java)
+                user?.let {
+                    textView3.text = it.username
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                //Snackbar.make()
+                //oops
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
         }
+
+        var userRef = FirebaseDatabase.getInstance().reference.child("users").child("Matroskinx")
+
+        userRef.addValueEventListener(userListener)
+        //userRef.addListenerForSingleValueEvent(userListener)*/
+
     }
 
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("twkey", textView3.text.toString())
-        //todo save fragment here
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -94,9 +113,9 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
-    @Throws(IOException::class)
+/*    @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
@@ -105,16 +124,16 @@ class HomeFragment : Fragment() {
         val storageDir: File? = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
         return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
+                "JPEG_${timeStamp}_",
+                ".jpg",
+                storageDir
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             mCurrentPhotoPath = absolutePath
         }
-    }
+    }*/
 
-    private fun dispatchPickPictureIntent()
+    /*private fun dispatchPickPictureIntent()
     {
         val frag : Fragment = this
         val intent : Intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -149,6 +168,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-    }
+    }*/
 
 }
