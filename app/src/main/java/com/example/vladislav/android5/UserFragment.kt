@@ -7,31 +7,32 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.user_fragment.*
 import java.io.File
 import java.io.IOException
 import java.util.*
 
 
-class UserFragment : Fragment() {
+class UserFragment : Fragment(), IDb {
+
+    val uid: String
+        get() = FirebaseAuth.getInstance().currentUser!!.uid
+
+//    var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_GALLERY_PICK = 9
@@ -40,40 +41,43 @@ class UserFragment : Fragment() {
 
     lateinit var currentUser : User
 
+    val dbMan = DbManager()
+
     var mNewPhotoUri : String? = null
 
-    val mDatabase = FirebaseDatabase.getInstance().getReference()
-    val mUsersRef = mDatabase.child("users")
+
+    //lateinit var actvt : MainActivity
 
 
-    private lateinit var userView : View
+    fun saveToDb()
+    {
+        val user = User(
+                username = name_text_e?.text.toString(),
+                last_name = last_name_text_e?.text.toString(),
+                email = email_text_e?.text.toString(),
+                phone = phone_text_e?.text.toString()
+        )
+//                currentUser.username = name_text_e?.text.toString()
+//                currentUser.last_name = last_name_text_e?.text.toString()
+//                currentUser.email = email_text_e?.text.toString()
+//                currentUser.phone = phone_text_e?.text.toString()
+
+        if(mNewPhotoUri != null)
+        {
+            imageView?.setImageURI(Uri.parse(mNewPhotoUri))
+            user.image_uri = mNewPhotoUri
+        }
+
+        dbMan.saveUserToDb(user)
+    }
+
 
     val dialogClickListener = DialogInterface.OnClickListener { dialog, which ->
-        when (which) {
+        when (which)
+        {
             DialogInterface.BUTTON_POSITIVE ->
             {
-
-                currentUser.username = name_text_e?.text.toString()
-                currentUser.last_name = last_name_text_e?.text.toString()
-                currentUser.email = last_name_text_e?.text.toString()
-                currentUser.phone = last_name_text_e?.text.toString()
-
-                if(mNewPhotoUri != null)
-                {
-                    imageView?.setImageURI(Uri.parse(mNewPhotoUri))
-                    currentUser.image_uri = mNewPhotoUri
-                }
-                //currentUser.image_uri = last_name_text_e?.text.toString()
-//                val user = User(
-//                        name_text_e.text.toString(),
-//                        last_name_text_e.text.toString(),
-//                        email_text_e.text.toString(),
-//                        phone_text_e.text.toString(),
-//                        currentUser.image_uri
-//                        )
-//
-//                mUsersRef.child("Vladislav").setValue(user)
-                mUsersRef.child("Vladislav").setValue(currentUser)
+                saveToDb()
             }
 
             DialogInterface.BUTTON_NEGATIVE ->
@@ -82,11 +86,38 @@ class UserFragment : Fragment() {
                 last_name_text_e.setText(last_name_text.text)
                 email_text_e.setText(email_text.text)
                 phone_text_e.setText(phone_text.text)
-                imageView_e.setImageURI(Uri.parse(currentUser.image_uri))
+                imageView_e.setImageURI(Uri.parse(dbMan.current_user.image_uri))
             }
         }
         view_switcher_x.showNext()
     }
+
+/*    val bottomNavClickListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
+        val builder = AlertDialog.Builder(context)
+
+        builder.setMessage("Do you want to save information?")
+                .setPositiveButton("YES", dialogClickListener)
+                .setNegativeButton("NO", dialogClickListener)
+                .show()
+
+        when (item.itemId) {
+            R.id.home_dest -> {
+                actvt.navController.navigate(R.id.home_dest)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.status_dest -> {
+                // TODO
+                actvt.navController.navigate(R.id.status_dest)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.user_dest -> {
+                actvt.navController.navigate(R.id.user_dest)
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }*/
 
     override fun onCreateView(inflater: LayoutInflater,
                               container : ViewGroup?,
@@ -96,7 +127,7 @@ class UserFragment : Fragment() {
         return inflater.inflate(R.layout.user_fragment, container, false)
     }
 
-/*    override fun setUserFields(user: User)
+    override fun setUserFields(user: User)
     {
         name_text?.text = user.username
         name_text_e?.setText(user.username)
@@ -109,61 +140,28 @@ class UserFragment : Fragment() {
 
         email_text?.text = user.email
         email_text_e?.setText(user.email)
-    }*/
+
+        imageView.setImageURI(Uri.parse(user.image_uri))
+        imageView_e.setImageURI(Uri.parse(user.image_uri))
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-/*        val dbMan = DbManager()
 
-        dbMan.getUserFromDb(this)*/
-
-
-        val userListener = object : ValueEventListener {
-
-            override fun onDataChange(p0: DataSnapshot) {
-
-                val user = p0.getValue(User::class.java)
-                if(user != null) {
-                    currentUser = user
-                }
-                user?.let {
-                    name_text?.text = currentUser.username
-                    name_text_e?.setText(currentUser.username)
-
-                    last_name_text?.text = it.last_name
-                    last_name_text_e?.setText(it.last_name)
-
-                    phone_text?.text = it.phone
-                    phone_text_e?.setText(it.phone)
-
-                    email_text?.text = it.email
-                    email_text_e?.setText(it.email)
-
-                    val photoUri = Uri.parse(currentUser.image_uri)
-                    imageView?.setImageURI(photoUri)
-                    imageView_e?.setImageURI(photoUri)
-                }
-            }
-
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        }
-
-        val currentUserRef = mUsersRef.child("Vladislav")
+        val user = User(
+                username = "Vlad",
+                last_name = "Kirianov",
+                email = "matroskinx@gmail.com",
+                phone = "+375291954890"
+        )
 
 
-        currentUserRef.addValueEventListener(userListener)
+        dbMan.getUserFromDb(this)
 
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
 
         noedit_switch_btn.setOnClickListener{
+            //actvt.bottom_bar.setOnNavigationItemSelectedListener(bottomNavClickListener)
             view_switcher_x.showNext()
         }
 
@@ -176,11 +174,79 @@ class UserFragment : Fragment() {
                     .setPositiveButton("YES", dialogClickListener)
                     .setNegativeButton("NO", dialogClickListener)
                     .show()
-
         }
 
         camera_button_e.setOnClickListener{
-            //StartCameraIntent()
+            dispatchTakePictureIntent()
+        }
+
+        pick_button_e.setOnClickListener{
+            dispatchPickPictureIntent()
+        }
+
+
+/*        val userListener = object : ValueEventListener {
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                val user = p0.getValue(User::class.java)
+                if(user != null) {
+                    currentUser = user
+                }
+                if(user != null)
+                {
+                    name_text?.text = currentUser.username
+                    name_text_e?.setText(currentUser.username)
+
+                    last_name_text?.text = currentUser.last_name
+                    last_name_text_e?.setText(currentUser.last_name)
+
+                    phone_text?.text = currentUser.phone
+                    phone_text_e?.setText(currentUser.phone)
+
+                    email_text?.text = currentUser.email
+                    email_text_e?.setText(currentUser.email)
+
+                    val a = currentUser.image_uri
+                    val photoUri = Uri.parse(currentUser.image_uri)
+                    imageView?.setImageURI(photoUri)
+                    imageView_e?.setImageURI(photoUri)
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        }*/
+
+/*        val currentUserRef = mUsersRef.child("Vladislav")
+
+        currentUserRef.addValueEventListener(userListener)*/
+
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+
+        noedit_switch_btn.setOnClickListener{
+            //actvt.bottom_bar.setOnNavigationItemSelectedListener(bottomNavClickListener)
+            view_switcher_x.showNext()
+        }
+
+        noedit_switch_btn_e.setOnClickListener{
+            //switch back button
+
+            val builder = AlertDialog.Builder(context)
+
+            builder.setMessage("Do you want to save information?")
+                    .setPositiveButton("YES", dialogClickListener)
+                    .setNegativeButton("NO", dialogClickListener)
+                    .show()
+        }
+
+        camera_button_e.setOnClickListener{
             dispatchTakePictureIntent()
         }
 
@@ -204,16 +270,12 @@ class UserFragment : Fragment() {
         val frag : Fragment = this
 
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
-                // Create the File where the photo should go
                 val photoFile: File? = try {
                     createImageFile()
                 } catch (ex: IOException) {
-                    // Error occurred while creating the File
                     null
                 }
-                // Continue only if the File was successfully created
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                             context!!,"com.example.android.fileprovider", it
@@ -228,18 +290,13 @@ class UserFragment : Fragment() {
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
-        // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        //val storageDir: File? = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
         val storageDir: File? = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-
         return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
+                "JPEG_${timeStamp}_",
+                ".jpg",
+                storageDir
         ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
             mCurrentPhotoPath = absolutePath
         }
     }
@@ -253,38 +310,17 @@ class UserFragment : Fragment() {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 val temp_file = File(mCurrentPhotoPath)
                 val temp_file_uri = Uri.fromFile(temp_file)
-
                 imageView_e.setImageURI(temp_file_uri)
-
                 mNewPhotoUri  = temp_file_uri.toString()
-
-
-
-                //currentUser.image_uri = temp_file_uri.toString()
-                //val photo = data?.getExtras()?.get("data") as Bitmap
-                //imageView.setImageBitmap(photo)
             }
             else if (requestCode == REQUEST_GALLERY_PICK)
             {
-                if(data != null)
-                {
-                    val photoURI : Uri = data.data!!
+                val photoURI : Uri? = data?.data
+                val bmp : Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, photoURI)
+                imageView_e.setImageBitmap(bmp)
+                mNewPhotoUri  = photoURI.toString()
 
-
-                    val bmp : Bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, photoURI)
-
-                    imageView_e.setImageBitmap(bmp)
-
-                    mNewPhotoUri  = photoURI.toString()
-
-
-                    //currentUser.image_uri = photoURI.toString()
-                }
             }
-
-            //mUsersRef.child("Vladislav").setValue(currentUser)
-
-
         }
     }
 }

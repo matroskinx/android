@@ -16,8 +16,4 @@ class StatusFragment : Fragment() {
         return inflater.inflate(R.layout.status_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
-    }
 }
