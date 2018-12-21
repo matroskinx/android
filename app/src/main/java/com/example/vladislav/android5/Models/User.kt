@@ -1,4 +1,4 @@
-package com.example.vladislav.android5
+package com.example.vladislav.android5.Models
 
 data class User(
         var username: String? = "",

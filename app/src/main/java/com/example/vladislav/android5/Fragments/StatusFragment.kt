@@ -1,12 +1,9 @@
-package com.example.vladislav.android5
+package com.example.vladislav.android5.Fragments
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
+import com.example.vladislav.android5.R
 
 class StatusFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,

@@ -15,4 +15,8 @@
         <item name="android:layout_marginRight">2dp</item>
     </style>
 
+    <!--<style name="MyTheme" parent="@android:style/Theme.Dialog">-->
+        <!--<item name="android:textColorPrimary">#000000</item>-->
+    <!--</style>-->
+
 </resources>

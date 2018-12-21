@@ -1,5 +1,7 @@
-package com.example.vladislav.android5
+package com.example.vladislav.android5.Managers
 
+import com.example.vladislav.android5.Interfaces.IDb
+import com.example.vladislav.android5.Models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,7 +23,7 @@ class DbManager
         val userListener = object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
 
-                current_user = p0.getValue(User::class.java)!!
+                current_user = p0.getValue(User::class.java) as User
 
                 view.setUserFields(current_user)
             }
@@ -39,6 +41,11 @@ class DbManager
     fun saveUserToDb(user : User)
     {
         mUsersRef.child(user_id).setValue(user)
+    }
+
+    fun saveUserToDb(uid : String, user : User)
+    {
+        mUsersRef.child(uid).setValue(user)
     }
 
 }

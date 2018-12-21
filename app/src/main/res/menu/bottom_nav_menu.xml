@@ -15,4 +15,14 @@
         android:title="User"
         android:icon="@drawable/ic_android_black_24dp"/>
 
+    <item
+        android:id="@id/rss_dest"
+        android:title="Rss"
+        android:icon="@drawable/ic_public_black_24dp"/>
+
+    <item
+        android:id="@id/link_dest"
+        android:title="Link"
+        android:icon="@drawable/ic_settings_black_24dp"/>
+
 </menu>

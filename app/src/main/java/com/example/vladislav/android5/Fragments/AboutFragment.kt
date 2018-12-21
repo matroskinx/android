@@ -1,4 +1,4 @@
-package com.example.vladislav.android5
+package com.example.vladislav.android5.Fragments
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -7,14 +7,15 @@ import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.view.*
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.ContextCompat.getSystemService
 import android.Manifest
 
 
 import androidx.fragment.app.Fragment
+import com.example.vladislav.android5.BuildConfig
+import com.example.vladislav.android5.PHONE_STATE_PERM_CODE
+import com.example.vladislav.android5.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.about_fragment.*
-import kotlinx.android.synthetic.main.about_fragment.view.*
 
 //import java.util.jar.Manifest
 
@@ -109,17 +110,8 @@ class AboutFragment : Fragment() {
 
     fun getImei() : String
     {
-        //val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        ///imeiTextView.text = telephonyManager.imei
         val tm = activity?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return tm?.imei
     }
-
-
-
-// для добавления элементов в appbar которые будут показываться только для данного фрагмента
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.main_menu, menu)
-//    }
 
 }
